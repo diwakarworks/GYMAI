@@ -4,6 +4,7 @@ import cookieParser from 'cookie-parser';
 import dotenv from 'dotenv';
 import { planRouter } from './routes/plan';
 import { profileRouter } from './routes/profile';
+import { dietRouter } from './routes/diet';
 
 dotenv.config();
 
@@ -20,6 +21,7 @@ app.use(express.json());
 
 app.use("/api/profile", profileRouter);
 app.use("/api/plan", planRouter);
+app.use("/api/diet", dietRouter)
 
 
 app.listen(PORT, () => {

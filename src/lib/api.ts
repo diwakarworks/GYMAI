@@ -39,4 +39,12 @@ export const api = {
   getCurrentPlan: (userId: string) => {
     return get(`/plan/current?userId=${userId}`);
   },
+
+  getCurrentDietPlan: (userID: string) => {
+    return get(`/diet/current?userId=${userID}`)
+  },
+
+  generateDietPlan: (userId: string) => {
+    return post('/diet/generate', {userId})
+  }
 };

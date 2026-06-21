@@ -13,6 +13,8 @@ export interface UserProfile {
   equipment: "full_gym" | "home" | "dumbbells";
   injuries?: string;
   preferredSplit: "full_body" | "upper_lower" | "ppl" | "custom";
+  bodyWeight: number;
+  gender: string;
   updatedAt: string;
 }
 
@@ -45,6 +47,47 @@ export interface TrainingPlan {
   overview: PlanOverview;
   weeklySchedule: DaySchedule[];
   progression: string;
+  version: number;
+  createdAt: string;
+}
+
+export interface Meal {
+  name: string;
+  time: string;
+  calories: number;
+  protein: number;
+  carbs: number;
+  fats: number;
+  foods: string[];
+  notes?: string;
+}
+
+export interface DietOverview {
+  goal: string;
+  calories: number;
+  protein: number;
+  carbs: number;
+  fats: number;
+  notes: string;
+}
+
+export interface MacroTargets {
+  calories: number;
+  protein: number;
+  carbs: number;
+  fats: number;
+}
+
+export interface DietPlan {
+  id: string;
+  userId: string;
+  overview: DietOverview;
+  dailyTargets: MacroTargets;
+  mealSchedule: Meal[];
+  foodsToEat: string[];
+  foodsToAvoid: string[];
+  supplements?: string[];
+  hydration: string;
   version: number;
   createdAt: string;
 }

@@ -6,6 +6,9 @@ export interface UserProfile {
   equipment: string;
   injuries?: string | null;
   preferred_split: string;
+  bodyWeight: number | null;
+  gender: string | null;
+
 }
 
 export interface PlanOverview {
@@ -40,3 +43,48 @@ export interface TrainingPlan {
   version: number;
   createdAt: string;
 }
+
+
+export interface Meal {
+  name: string;
+  time: string;           // e.g. "8:00 AM"
+  calories: number;
+  protein: number;        // grams
+  carbs: number;
+  fats: number;
+  foods: string[];        // e.g. ["4 egg whites", "oats 80g"]
+  notes?: string;
+}
+
+export interface DietPlan {
+  id: string;
+  userId: string;
+  overview: DietOverview;
+  dailyTargets: MacroTargets;
+  mealSchedule: Meal[];
+  foodsToEat: string[];
+  foodsToAvoid: string[];
+  supplements?: string[];
+  hydration: string;
+  version: number;
+  createdAt: string;
+}
+
+export interface DietOverview {
+  goal: string;
+  calories: number;
+  protein: number;
+  carbs: number;
+  fats: number;
+  notes: string;
+}
+
+export interface MacroTargets {
+  calories: number;
+  protein: number;   // g
+  carbs: number;     // g
+  fats: number;      // g
+}
+
+
+

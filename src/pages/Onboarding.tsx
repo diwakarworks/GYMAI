@@ -6,6 +6,7 @@ import { useState } from "react";
 import { Textarea } from "../components/ui/Textarea";
 import { Button } from "../components/ui/Button";
 import { ArrowRight, Loader2 } from "lucide-react";
+import { Input } from "../components/ui/Input";
 import type { UserProfile } from "../types";
 import { useNavigate } from "react-router-dom";
 
@@ -61,6 +62,8 @@ export default function Onboarding() {
     equipment: "full_gym",
     injuries: "",
     preferredSplit: "upper_lower",
+    bodyWeight: '',
+    gender: 'male'
   });
   const [isGenerating, setIsGenerating] = useState(false);
   const [_error, setError] = useState("");
@@ -81,6 +84,8 @@ export default function Onboarding() {
       equipment: formData.equipment as UserProfile["equipment"],
       injuries: formData.injuries || undefined,
       preferredSplit: formData.preferredSplit as UserProfile["preferredSplit"],
+      bodyWeight: formData.bodyWeight ? parseInt(formData.bodyWeight) : 0,
+      gender: formData.gender as UserProfile["gender"],
     };
     try {
       await saveProfile(profile);
@@ -170,6 +175,28 @@ export default function Onboarding() {
                   value={formData.injuries}
                   onChange={(e) => updateForm("injuries", e.target.value)}
                 />
+
+                <Input
+                  id="bodyWeight"
+                  label="Body weight (kg)"
+                  type="number"
+                  placeholder="E.g., 70"
+                  value={formData.bodyWeight}
+                  onChange={(e) => updateForm("bodyWeight", e.target.value)}
+                />
+
+                <Select
+                  id="gender"
+                  label="Gender"
+                  options={[
+                    { value: "male", label: "Male" },
+                    { value: "female", label: "Female" },
+                    { value: "other", label: "Other" },
+                  ]}
+                  value={formData.gender}
+                  onChange={(e) => updateForm("gender", e.target.value)}
+                />
+
 
                 <div className="flex gap-3 pt-2">
                   <Button type="submit" className="flex-1 gap-2">

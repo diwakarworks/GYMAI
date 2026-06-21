@@ -32,6 +32,18 @@ model user_profiles {
   equipment String @db.VarChar(20)
   injuries String?
   preferred_split String @db.VarChar(20)
+  bodyweight Float?
+  gender String? @db.VarChar(10)
   updated_at DateTime @default(now()) @db.Timestamptz(6)
 }
  
+model diet_plans {
+  id         String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  user_id    String   @db.Uuid
+  plan_json  Json
+  plan_text  String
+  version    Int      @default(1)
+  created_at DateTime @default(now()) @db.Timestamptz(6)
+
+  @@index([user_id], map: "idx_diet_plans_user_id")
+}
