@@ -16,6 +16,8 @@ export async function generateTrainingPlan(
     equipment: profile.equipment || "full_gym",
     injuries: profile.injuries || null,
     preferred_split: profile.preferred_split || "upper_lower",
+    bodyWeight: profile.bodyWeight || 70,
+    gender: profile.gender || 'Male'
   };
 
   const apiKey = process.env.OPEN_ROUTER_KEY;
