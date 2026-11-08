@@ -1,6 +1,7 @@
 import OpenAI from "openai";
 import dotenv from "dotenv";
 import { DietPlan, UserProfile } from "../../types";
+import { parseJsonFromAI } from "./parseJson";
 
 dotenv.config();
 
@@ -32,7 +33,7 @@ export async function generateDietPlan(
 
   try {
     const completion = await openai.chat.completions.create({
-      model: "openrouter/auto",
+      model: "nvidia/nemotron-3.5-lightning:free",
       messages: [
         {
           role: "system",
@@ -45,14 +46,14 @@ export async function generateDietPlan(
         },
       ],
       temperature: 0.7,
-      max_tokens: 4000,
-      response_format: { type: "json_object" },
+      max_tokens: 6000,
+      ...({ reasoning: { enabled: false } } as any),
     });
 
     const content = completion.choices[0].message.content;
     if (!content) throw new Error("No content in AI response");
 
-    const planData = JSON.parse(content);
+    const planData =  parseJsonFromAI(content);
     return formatDietResponse(planData, normalizedProfile);
   } catch (error) {
     console.error("[AI] Error generating diet plan:", error);

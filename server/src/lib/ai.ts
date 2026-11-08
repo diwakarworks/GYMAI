@@ -1,6 +1,7 @@
 import OpenAI from "openai";
 import dotenv from "dotenv";
 import { TrainingPlan, UserProfile } from "../../types";
+import { parseJsonFromAI } from "./parseJson";
 
 dotenv.config();
 
@@ -40,7 +41,7 @@ export async function generateTrainingPlan(
 
   try {
     const completion = await openai.chat.completions.create({
-      model: "openrouter/auto",
+      model: "nvidia/nemotron-3.5-lightning:free",
       messages: [
         {
           role: "system",
@@ -53,8 +54,8 @@ export async function generateTrainingPlan(
         },
       ],
       temperature: 0.7,
-      max_tokens: 4000,
-      response_format: { type: "json_object" },
+      max_tokens: 6000,
+      ...({ reasoning: { enabled: false } } as any),
     });
 
     const content = completion.choices[0].message.content;
@@ -67,7 +68,7 @@ export async function generateTrainingPlan(
       throw new Error("No content in AI response");
     }
 
-    const planData = JSON.parse(content);
+    const planData = parseJsonFromAI(content);
 
     return formatPlanResponse(planData, normalizedProfile);
   } catch (error) {
@@ -186,7 +187,9 @@ Generate a complete training plan in JSON format with this exact structure:
   - ${profile.injuries ? `Avoid exercises that could aggravate: ${profile.injuries}` : ""}
   - Provide exercise alternatives where appropriate
   - Make it progressive and suitable for ${experienceMap[profile.experience] || profile.experience} level
-  
-  Return ONLY the JSON object (no markdown, no extra text).
+
+    - Return compact JSON on as few lines as possible
+    - Keep each exercise "notes" under 10 words
+    - Give at most 2 alternatives per exercise
   `;
 }
